@@ -2,46 +2,109 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Anand Love Sneha — Dynamic Moon v5.0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Anand Love Sneha — Responsive Moon v5.1</title>
 <style>
-:root{--bg1:#100625;--text:#fff}
-html,body{height:100%;margin:0;background:radial-gradient(circle at 50% 18%, #151033 0%, #06021a 60%, #01000a 100%);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text);overflow:hidden}
-canvas{position:fixed;inset:0;display:block;pointer-events:none;z-index:0}
+:root{--text:#fff;}
+body{
+  margin:0;
+  height:100vh;
+  background:radial-gradient(circle at 50% 20%, #1a0f36 0%, #08021b 60%, #020010 100%);
+  font-family:"Poppins",Segoe UI,system-ui;
+  color:var(--text);
+  overflow:hidden;
+}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 
-/* moon container — matches screenshot: centered, big */
+/* ===== MOON ===== */
 #moonWrap{
-  position:fixed;left:50%;top:38%;transform:translate(-50%,-38%);z-index:1;
-  width:54vmin;max-width:760px;min-width:360px;height:54vmin;border-radius:50%;overflow:hidden;pointer-events:none;
-  opacity:1; /* moon image itself will be semi-transparent */
+  position:fixed;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  aspect-ratio:1/1;
+  width:min(65vmin,85vw);
+  border-radius:50%;
+  overflow:hidden;
+  z-index:1;
+  pointer-events:none;
 }
 #moonImg{
-  width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;
-  filter:brightness(1.02) contrast(1.05);opacity:.95;
-  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 98%, rgba(0,0,0,0) 100%);
-          mask-image: radial-gradient(circle, rgba(0,0,0,1) 98%, rgba(0,0,0,0) 100%);
-  will-change:transform,filter,opacity,mask-image;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+  opacity:0.9;
+  transition:filter .6s ease;
+  -webkit-mask-image:radial-gradient(circle, rgba(0,0,0,1) 98%, rgba(0,0,0,0) 100%);
+  mask-image:radial-gradient(circle, rgba(0,0,0,1) 98%, rgba(0,0,0,0) 100%);
 }
 
-/* title in front of moon (large center) */
-.titleWrap{position:fixed;left:50%;top:38%;transform:translate(-50%,-38%);z-index:3;text-align:center;pointer-events:none}
-.title{font-size:clamp(28px,5.2vw,56px);margin:0;font-weight:700;text-shadow:0 14px 40px rgba(0,0,0,0.45)}
-.subtitle{margin-top:6px;font-size:clamp(12px,2.2vw,16px);color:rgba(255,255,255,0.8)}
+/* ===== TEXT ===== */
+.titleWrap{
+  position:fixed;
+  top:43%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:3;
+  width:90%;
+}
+h1{
+  margin:0;
+  font-size:clamp(24px,6vw,50px);
+  text-shadow:0 0 18px rgba(0,0,0,0.5);
+}
+.subtitle{
+  margin-top:4px;
+  font-size:clamp(12px,3vw,16px);
+  opacity:0.9;
+}
 
-/* tap button fallback */
-#tap{position:fixed;left:50%;top:56%;transform:translateX(-50%);z-index:5;display:none;padding:10px 14px;border-radius:999px;border:0;background:rgba(255,255,255,0.08);color:var(--text);cursor:pointer}
+.message{
+  position:fixed;
+  top:68%;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  width:90%;
+  font-size:clamp(13px,3.6vw,20px);
+  line-height:1.5;
+  opacity:0;
+  transition:opacity .6s ease;
+  text-shadow:0 0 12px rgba(0,0,0,0.6);
+  z-index:3;
+}
 
-/* message fixed below title (lower part of moon) — doesn't move */
-.message{position:fixed;left:50%;top:62%;transform:translate(-50%,-0%);z-index:3;width:86%;max-width:920px;text-align:center;color:var(--text);font-size:clamp(14px,2.2vw,20px);line-height:1.6;opacity:0;transition:opacity .6s ease;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+#tap{
+  position:fixed;
+  top:58%;
+  left:50%;
+  transform:translateX(-50%);
+  padding:10px 16px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.1);
+  color:var(--text);
+  border:0;
+  cursor:pointer;
+  z-index:4;
+  display:none;
+}
 
-.footer{position:fixed;right:12px;bottom:10px;color:rgba(255,255,255,0.45);font-size:12px;z-index:4}
+footer{
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  font-size:12px;
+  color:rgba(255,255,255,0.6);
+  z-index:5;
+}
 
-/* small devices */
-@media(max-width:640px){
-  #moonWrap{top:32%}
-  .titleWrap{top:32%}
-  #tap{top:52%}
-  .message{top:60%}
+/* Prevent moon stretch on mobile landscape */
+@media (orientation:landscape) and (max-height:500px){
+  #moonWrap{width:min(50vmin,60vh);}
+  .titleWrap{top:45%;}
+  .message{top:75%;}
 }
 </style>
 </head>
@@ -49,170 +112,67 @@ canvas{position:fixed;inset:0;display:block;pointer-events:none;z-index:0}
 <canvas id="stars"></canvas>
 <canvas id="shoot"></canvas>
 
-<!-- moon (image file moon.jpg must be in same folder) -->
-<div id="moonWrap" aria-hidden="true">
-  <img id="moonImg" src="moon.jpg" alt="Moon texture">
-</div>
+<div id="moonWrap"><img id="moonImg" src="moon.jpg" alt="Moon texture"></div>
 
-<!-- main title -->
 <div class="titleWrap">
-  <div class="title">Anand Love Sneha <span style="font-size:.65em">💞</span></div>
+  <h1>Anand Love Sneha 💞</h1>
   <div class="subtitle">Story by Anand</div>
 </div>
 
-<!-- tap fallback and message -->
 <button id="tap">Tap to play ❤️</button>
-<div id="message" class="message"></div>
-
-<div class="footer">Made by Anand for Sneha 💞</div>
+<div class="message" id="msg"></div>
+<footer>Made by Anand for Sneha 💕</footer>
 
 <audio id="bg" src="music.mp3" preload="auto" loop></audio>
 
 <script>
-/* ---------- audio autoplay fallback ---------- */
-const bg = document.getElementById('bg'), tap = document.getElementById('tap');
-bg.volume = 0.30;
-bg.play().then(()=>{ tap.style.display='none' }).catch(()=>{ tap.style.display='block' });
-tap.addEventListener('click', ()=>{ bg.play().catch(()=>{}); tap.style.display='none'; }, {once:true});
+const bg=document.getElementById("bg"),tap=document.getElementById("tap");
+bg.volume=0.3;bg.play().catch(()=>tap.style.display="block");
+tap.onclick=()=>{bg.play();tap.style.display="none"};
 
-/* ---------- starfield + shooting ---------- */
-const sC = document.getElementById('stars'), sCtx = sC.getContext('2d');
-const shC = document.getElementById('shoot'), shCtx = shC.getContext('2d');
-function resize(){ sC.width = shC.width = innerWidth; sC.height = shC.height = innerHeight; }
-resize(); addEventListener('resize', resize);
+/* 🌟 Stars */
+const sc=document.getElementById("stars"),ctx=sc.getContext("2d");
+function resize(){sc.width=innerWidth;sc.height=innerHeight;}resize();addEventListener("resize",resize);
+let stars=[...Array(90)].map(()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.4+0.2,p:Math.random()*Math.PI*2}));
+function drawStars(t){ctx.clearRect(0,0,sc.width,sc.height);for(const s of stars){s.p+=0.005;ctx.fillStyle=`rgba(255,255,255,${0.3+0.3*Math.sin(s.p)})`;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();}requestAnimationFrame(drawStars);}requestAnimationFrame(drawStars);
 
-let stars=[];
-function makeStars(){
-  stars=[]; const count = Math.max(70, Math.floor(innerWidth/12));
-  for(let i=0;i<count;i++) stars.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight*0.7,r:Math.random()*1.6+0.2,phase:Math.random()*Math.PI*2,base:Math.random()*0.6+0.2,speed:Math.random()*0.01+0.003});
+/* 🌙 Moon Phase */
+const moon=document.getElementById("moonImg"),wrap=document.getElementById("moonWrap");
+function phase(){
+  const now=new Date();
+  let y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();
+  if(m<3){y--;m+=12;}
+  const k1=Math.floor(365.25*(y+4712)),k2=Math.floor(30.6001*(m+1));
+  const jd=k1+k2+d-1524.5+(now.getHours()/24);
+  const syn=29.53058867;
+  let days=(jd-2451549.5)%syn;if(days<0)days+=syn;
+  const p=days/syn,n=p*2-1,off=50+n*28,shade=Math.abs(n)*0.8;
+  const mask=`radial-gradient(circle at 50% 50%,rgba(0,0,0,0) 0%,rgba(0,0,0,${0.1+shade*0.3}) 55%,rgba(0,0,0,0.95) 100%),linear-gradient(90deg,rgba(0,0,0,0.95) ${off}%,rgba(0,0,0,0) ${off+8}%)`;
+  moon.style.webkitMaskImage=mask;moon.style.maskImage=mask;
+  const bright=0.9+0.3*Math.sin(p*Math.PI);
+  moon.style.filter=`brightness(${bright}) contrast(1.05)`;
 }
-makeStars();
+phase();setInterval(phase,60000);
 
-let shoots=[];
-function spawnS(){ const fromL = Math.random()>.5; const sx = fromL?-60:innerWidth+60; const sy = Math.random()*innerHeight*0.35+20; const vx = fromL? (Math.random()*6+8) : -(Math.random()*6+8); const vy = (Math.random()*1+0.4); shoots.push({x:sx,y:sy,vx,vy,life:0,ttl:Math.random()*500+700,size:Math.random()*1.4+0.8}) }
-setTimeout(function loopSpawn(){ spawnS(); setTimeout(loopSpawn, 4500 + Math.random()*2000) }, 1000);
+/* alive pulse */
+let t0=performance.now();function pulse(){const t=(performance.now()-t0)/1000;const s=1+0.02*Math.sin(t*1.5);const fx=Math.sin(t*0.12)*6,fy=Math.cos(t*0.1)*4;wrap.style.transform=`translate(calc(-50% + ${fx}px),calc(-50% + ${fy}px)) scale(${s})`;requestAnimationFrame(pulse);}pulse();
 
-let last=performance.now();
-function loop(now){
-  const dt = now - last; last = now;
-  // stars
-  sCtx.clearRect(0,0,sC.width,sC.height);
-  for(let s of stars){
-    s.phase += s.speed * dt;
-    const a = Math.max(0.15, s.base + 0.5*Math.sin(s.phase));
-    sCtx.beginPath(); sCtx.fillStyle = `rgba(255,255,255,${a})`; sCtx.arc(s.x,s.y,s.r,0,Math.PI*2); sCtx.fill();
-  }
-  // shooting stars
-  shCtx.clearRect(0,0,shC.width,shC.height);
-  for(let i=shoots.length-1;i>=0;i--){
-    const st = shoots[i]; st.life += dt; st.x += st.vx*(dt/16); st.y += st.vy*(dt/16);
-    const prog = st.life/st.ttl;
-    if(prog>1){ shoots.splice(i,1); continue; }
-    shCtx.beginPath(); shCtx.strokeStyle = `rgba(255,255,255,${1-prog*0.95})`; shCtx.lineWidth = st.size; shCtx.moveTo(st.x,st.y); shCtx.lineTo(st.x - st.vx*16*0.08, st.y - st.vy*16*0.08); shCtx.stroke();
-    shCtx.beginPath(); shCtx.fillStyle = `rgba(255,255,255,${1-prog*0.95})`; shCtx.arc(st.x,st.y,st.size*1.2,0,Math.PI*2); shCtx.fill();
-  }
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
-
-/* ---------- moon phase (includes fractional day using time) ---------- */
-const moonImg = document.getElementById('moonImg'), moonWrap = document.getElementById('moonWrap');
-
-function calcPhaseFraction(date){
-  // more precise fractional moon age using hours/min/sec to update during the day
-  const y = date.getFullYear(), m = date.getMonth()+1, d = date.getDate();
-  const H = date.getHours(), Min = date.getMinutes(), S = date.getSeconds();
-  let yy=y, mm=m;
-  if(mm < 3){ yy--; mm+=12; }
-  const k1 = Math.floor(365.25*(yy+4712));
-  const k2 = Math.floor(30.6001*(mm+1));
-  const jd0 = k1 + k2 + d - 1524.5;
-  const dayFrac = (H + Min/60 + S/3600)/24;
-  const jd = jd0 + dayFrac;
-  const syn = 29.53058867;
-  let days = (jd - 2451549.5) % syn; if(days < 0) days += syn;
-  const phase = days / syn; // 0..1
-  return phase;
-}
-
-function applyPhaseMask(){
-  const phase = calcPhaseFraction(new Date()); // 0..1
-  const norm = phase*2 - 1; // -1..1
-  // moving dark mask and strength
-  const offset = 50 + norm*28; // percent
-  const darkStrength = Math.abs(norm) * 0.86;
-  const mask = `radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,${0.02 + darkStrength*0.28}) 55%, rgba(0,0,0,0.98) 100%), linear-gradient(90deg, rgba(0,0,0,0.98) ${offset}%, rgba(0,0,0,0) ${offset + 7}%)`;
-  moonImg.style.webkitMaskImage = mask; moonImg.style.maskImage = mask;
-  const fullness = Math.sin(phase * Math.PI); // 0..1
-  const scale = 0.95 + 0.18 * fullness; // 0.95..1.13
-  // alive pulse + drift applied on top later; set base scale here
-  moonWrap.dataset.baseScale = scale;
-  moonImg.style.filter = `brightness(${0.9 + 0.28*fullness}) contrast(1.06)`;
-}
-applyPhaseMask();
-setInterval(applyPhaseMask, 60*1000); // refresh every minute
-
-/* subtle alive pulse + slow drift (uses base scale from phase) */
-let t0 = performance.now();
-function animateMoon(){
-  const t = (performance.now() - t0)/1000;
-  const pulse = 1 + 0.02 * Math.sin(t * 1.6); // slightly more visible pulse
-  const floatX = Math.sin(t*0.12) * (innerWidth*0.0009);
-  const floatY = Math.cos(t*0.1) * (innerHeight*0.0009);
-  const base = parseFloat(moonWrap.dataset.baseScale || 1);
-  moonWrap.style.transform = `translate(calc(-50% + ${floatX}px), calc(-38% + ${floatY}px)) scale(${base * pulse})`;
-  requestAnimationFrame(animateMoon);
-}
-requestAnimationFrame(animateMoon);
-
-/* ---------- messages: auto + click-to-advance (stays fixed position) ---------- */
-const messages = [
-  "A story written in pixels, but felt in every heartbeat 💗",
-  "Hey Sneha Shaw, that message about ‘Fir Mohabbat’ started our story 💞",
-  "28 Sept 2025 — the day my heart found its home 💖",
-  "2 Oct — you said ‘I like you’ and my world changed ✨",
-  "4 Oct — our first call; your voice was peace, your laugh was home 💞",
-  "I can’t spend a day without your ‘Good Morning’ and night without your ‘Love you’ 💖",
-  `Since 27 Sept 2025 — it's been ${Math.floor((Date.now()-new Date(2025,8,27))/(1000*60*60*24))} days of love.`,
-  "I will always love you, no matter what comes ❤️",
-  "Na waqt rok saka, na dooriyan tod saki… meri mohabbat tujhme hi simat gayi 💞"
+/* 💬 Messages */
+const msgs=[
+ "A story written in pixels, but felt in every heartbeat 💗",
+ "Hey Sneha Shaw, that message about ‘Fir Mohabbat’ started our story 💞",
+ "28 Sept 2025 — the day my heart found its home 💖",
+ "2 Oct — you said ‘I like you’ and my world changed ✨",
+ "4 Oct — our first call; your voice was peace, your laugh was home 💞",
+ "I can’t spend a day without your ‘Good Morning’ and night without your ‘Love you’ 💖",
+ `Since 27 Sept 2025 — it's been ${Math.floor((Date.now()-new Date(2025,8,27))/(1000*60*60*24))} days of love.`,
+ "I will always love you, no matter what comes ❤️",
+ "Na waqt rok saka, na dooriyan tod saki… meri mohabbat tujhme hi simat gayi 💞"
 ];
-const msgEl = document.getElementById('message');
-let idx = 0, timer = null, interval = 8000;
-
-function showMessage(i){
-  msgEl.style.opacity = 0;
-  setTimeout(()=>{ msgEl.textContent = messages[i]; msgEl.style.opacity = 1; }, 300);
-  if(timer) clearTimeout(timer);
-  timer = setTimeout(()=>{ nextMessage(); }, interval);
-}
-function nextMessage(){
-  idx = (idx + 1) % messages.length;
-  showMessage(idx);
-}
-showMessage(0);
-
-// click/tap anywhere to advance (ignore taps on the tap button)
-document.addEventListener('click', function(e){
-  const t = e.target;
-  if(t && (t.id==='tap' || t.tagName==='BUTTON' || t.tagName==='A')) return;
-  // advance immediately
-  if(timer) clearTimeout(timer);
-  nextMessage();
-}, {passive:true});
-document.addEventListener('touchstart', function(e){
-  const t = e.target;
-  if(t && (t.id==='tap' || t.tagName==='BUTTON' || t.tagName==='A')) return;
-  if(timer) clearTimeout(timer);
-  nextMessage();
-}, {passive:true});
-
-/* update day-count and phase on focus */
-window.addEventListener('focus', ()=>{ messages[6] = `Since 27 Sept 2025 — it's been ${Math.floor((Date.now()-new Date(2025,8,27))/(1000*60*60*24))} days of love.`; showMessage(idx); applyPhaseMask(); });
-
-/* regenerate stars on resize */
-window.addEventListener('resize', ()=>{ makeStars(); });
-
+const msg=document.getElementById("msg");let i=0;
+function show(n){msg.style.opacity=0;setTimeout(()=>{msg.textContent=msgs[n];msg.style.opacity=1;},300);}
+show(0);let timer=setInterval(()=>{i=(i+1)%msgs.length;show(i)},8000);
+document.addEventListener("click",e=>{if(e.target.id=="tap")return;clearInterval(timer);i=(i+1)%msgs.length;show(i)},false);
 </script>
 </body>
 </html>
